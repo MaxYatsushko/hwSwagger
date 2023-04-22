@@ -27,6 +27,16 @@ public class FacultyService {
         return faculties;
     }
 
+    public Map<Long, Faculty> getAll(String color){
+        Map<Long,Faculty> facultyColor = new HashMap<>();
+        long idCount = 0;
+        for (Faculty faculty: faculties.values())
+            if (faculty.getColor().equals(color))
+            facultyColor.put(idCount++, faculty);
+
+        return facultyColor;
+    }
+
     public Faculty update(long id, String name, String color){
         Faculty faculty = faculties.get(id);
 

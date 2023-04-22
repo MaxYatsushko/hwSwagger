@@ -32,6 +32,10 @@ public class FacultyController {
     public Map<Long, Faculty> getAll(){
         return facultyService.getAll();
     }
+    @GetMapping("/getAll/{color}")
+    public Map<Long, Faculty> getAll(@PathVariable String color){
+        return facultyService.getAll(color);
+    }
 
     @PutMapping
     public Faculty update(@RequestBody FacultyUpdationRequest facultyUpdationRequest){

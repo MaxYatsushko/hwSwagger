@@ -29,6 +29,16 @@ public class StudentService {
         return students;
     }
 
+    public Map<Long, Student> getAll(int age){
+        Map<Long,Student> studentAge = new HashMap<>();
+        long idCount = 0;
+        for (Student student: students.values())
+            if (student.getAge() == age)
+                studentAge.put(idCount++, student);
+
+        return studentAge;
+    }
+
     public Student update(long id, String name, int age){
         Student student = students.get(id);
 
