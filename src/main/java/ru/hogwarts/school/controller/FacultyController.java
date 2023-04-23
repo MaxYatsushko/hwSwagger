@@ -1,5 +1,7 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.FacultyCreationRequest;
@@ -7,7 +9,9 @@ import ru.hogwarts.school.model.FacultyUpdationRequest;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/faculty")
@@ -19,26 +23,33 @@ public class FacultyController {
     }
 
     @PostMapping
-    public Faculty add(@RequestBody FacultyCreationRequest facultyCreationRequest){
-        return facultyService.add(facultyCreationRequest.getName(), facultyCreationRequest.getColor());
+    public Faculty add(@RequestBody Faculty request){
+        return facultyService.add(request);
     }
 
     @DeleteMapping
-    public Faculty delete(long id){
-        return facultyService.delete(id);
+    public ResponseEntity<Faculty> delete(long id){
+        facultyService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/getAll")
-    public Map<Long, Faculty> getAll(){
+    public Collection<Faculty> getAll(){
         return facultyService.getAll();
     }
     @GetMapping("/getAll/{color}")
-    public Map<Long, Faculty> getAll(@PathVariable String color){
+    public Set<Faculty> getAll(@PathVariable String color){
         return facultyService.getAll(color);
     }
 
     @PutMapping
-    public Faculty update(@RequestBody FacultyUpdationRequest facultyUpdationRequest){
-        return facultyService.update(facultyUpdationRequest.getId(), facultyUpdationRequest.getName(), facultyUpdationRequest.getColor());
+    public ResponseEntity<Faculty> update(@RequestBody Faculty request){
+        Faculty foundFaculty = facultyService.update(request);
+
+        if (foundFaculty == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return ResponseEntity.ok(foundFaculty);
     }
 }
