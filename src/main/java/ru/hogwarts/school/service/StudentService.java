@@ -3,52 +3,43 @@ package ru.hogwarts.school.service;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class StudentService {
 
-    private long idCount = 0;
-    private Map<Long, Student> students = new HashMap<>();
+    private final StudentRepository studentRepository;
 
-    public Student add(String name, int age){
-        long id = idCount++;
-        Student student = new Student(id, name, age);
-        students.put(id, student);
-
-        return student;
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
     }
 
-    public Student delete(long id){
-        return students.remove(id);
+    public Student add(Student student){
+        return studentRepository.save(student);
     }
 
-    public Map<Long, Student> getAll(){
-        return students;
+    public void delete(long id){
+        studentRepository.deleteById(id);
     }
 
-    public Map<Long, Student> getAll(int age){
-        Map<Long,Student> studentAge = new HashMap<>();
-        long idCount = 0;
-        for (Student student: students.values())
+    public Collection<Student> getAll(){
+        return studentRepository.findAll();
+    }
+
+    public Set<Student> getAll(int age){
+
+        Set<Student> studentAge = new HashSet<>();
+        Collection<Student> students = studentRepository.findAll();
+        for (Student student: students)
             if (student.getAge() == age)
-                studentAge.put(idCount++, student);
+                studentAge.add(student);
 
         return studentAge;
     }
 
-    public Student update(long id, String name, int age){
-        Student student = students.get(id);
-
-        if(student != null) {
-            student.setName(name);
-            student.setAge(age);
-
-            return student;
-        }
-
-        return null;
+    public Student update(Student student){
+        return studentRepository.save(student);
     }
 }

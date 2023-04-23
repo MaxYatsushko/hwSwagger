@@ -1,52 +1,45 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class FacultyService {
-    private long idCount = 0;
-    private Map<Long, Faculty> faculties = new HashMap<>();
+    private final FacultyRepository facultyRepository;
 
-    public Faculty add(String name, String color){
-        long id = idCount++;
-        Faculty faculty = new Faculty(id, name, color);
-        faculties.put(id, faculty);
-
-        return faculty;
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
     }
 
-    public Faculty delete(long id){
-        return faculties.remove(id);
+    public Faculty add(Faculty faculty){
+        return facultyRepository.save(faculty);
     }
 
-    public Map<Long, Faculty> getAll(){
-        return faculties;
+    public void delete(long id){
+        facultyRepository.deleteById(id);
     }
 
-    public Map<Long, Faculty> getAll(String color){
-        Map<Long,Faculty> facultyColor = new HashMap<>();
-        long idCount = 0;
-        for (Faculty faculty: faculties.values())
+    public Collection<Faculty> getAll(){
+        return facultyRepository.findAll();
+    }
+
+    public Set<Faculty> getAll(String color){
+
+        Set<Faculty> facultiesColor = new HashSet<>();
+        Collection<Faculty> faculties = facultyRepository.findAll();
+        for (Faculty faculty: faculties)
             if (faculty.getColor().equals(color))
-            facultyColor.put(idCount++, faculty);
+                facultiesColor.add(faculty);
 
-        return facultyColor;
+        return facultiesColor;
     }
 
-    public Faculty update(long id, String name, String color){
-        Faculty faculty = faculties.get(id);
-
-        if(faculty != null) {
-            faculty.setName(name);
-            faculty.setColor(color);
-
-            return faculty;
-        }
-
-        return null;
+    public Faculty update(Faculty faculty){
+        return facultyRepository.save(faculty);
     }
 }

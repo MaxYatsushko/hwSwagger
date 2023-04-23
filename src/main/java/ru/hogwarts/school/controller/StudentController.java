@@ -1,5 +1,7 @@
 package ru.hogwarts.school.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.FacultyCreationRequest;
@@ -8,7 +10,9 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/student")
@@ -21,25 +25,31 @@ public class StudentController {
 
     @PostMapping
     public Student add(@RequestBody Student request){
-        return studentService.add(request.getName(), request.getAge());
+        return studentService.add(request);
     }
 
     @DeleteMapping
-    public Student delete(long id){
-        return studentService.delete(id);
+    public ResponseEntity delete(long id){
+        studentService.delete(id);
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/getAll")
-    public Map<Long, Student> getAll(){
+    public Collection<Student> getAll(){
         return studentService.getAll();
     }
     @GetMapping("/getAll/{age}")
-    public Map<Long, Student> getAll(@PathVariable int age){
+    public Set<Student> getAll(@PathVariable int age){
         return studentService.getAll(age);
     }
 
     @PutMapping
-    public Student update(@RequestBody Student request){
-        return studentService.update(request.getId(), request.getName(), request.getAge());
+    public ResponseEntity<Student> update(@RequestBody Student request){
+        Student foundStudent = studentService.update(request);
+
+        if (foundStudent == null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+        return ResponseEntity.ok(foundStudent);
     }
 }
