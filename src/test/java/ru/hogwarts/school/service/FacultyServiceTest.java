@@ -26,11 +26,6 @@ class FacultyServiceTest {
     @MockBean
     private FacultyRepository facultyRepository;
 
-    @BeforeEach
-    void init(){
-        facultyService = new FacultyService(facultyRepository);
-    }
-
     @Test
     void add_success() {
         //входные данные

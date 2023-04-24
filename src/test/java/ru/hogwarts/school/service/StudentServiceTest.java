@@ -30,11 +30,6 @@ class StudentServiceTest {
     @MockBean
     private StudentRepository studentRepository;
 
-    @BeforeEach
-    void init(){
-        studentService = new StudentService(studentRepository);
-    }
-
     @Test
     void add_success() {
         //входные данные
