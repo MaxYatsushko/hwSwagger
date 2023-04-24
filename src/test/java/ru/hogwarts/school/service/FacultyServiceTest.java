@@ -8,6 +8,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.*;
@@ -134,5 +135,62 @@ class FacultyServiceTest {
         assertEquals(faculties, actualFaculties2);
         assertEquals(fac1, facultyActual);
         assertTrue(colorLast == facultyActual.getColor());
+    }
+    public List<Faculty> getAll(String name, String color){
+        return facultyRepository.findAllByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    }
+
+    public List<Student> getStudents(Faculty faculty){
+        return faculty.getStudents();
+    }
+    @Test
+    void getAllNameOrColor_success() {
+        //входные данные
+        String name = "test";
+        String color = "green";
+        int ageSecond = 20;
+        Faculty fac1 = new Faculty();
+        fac1.setColor(color);
+
+        Faculty fac2 = new Faculty();
+        fac2.setName(color);
+
+        Faculty fac3 = new Faculty();
+        fac3.setName(name);
+
+        List<Faculty> faculties = List.of(fac1, fac3);
+
+        //ожидаемый результат
+        when(facultyRepository.findAllByNameIgnoreCaseOrColorIgnoreCase(name, color)).thenReturn(faculties);
+
+
+        //начало теста
+        facultyService.add(fac1);
+        facultyService.add(fac2);
+        facultyService.add(fac3);
+        List<Faculty> actualStudents = facultyService.getAll(name, color);
+        assertEquals(faculties, actualStudents);
+
+    }
+
+    @Test
+    void getStudents_success() {
+
+        //входные данные
+        String name = "test";
+        Faculty fac1 = new Faculty();
+        fac1.setName(name);
+
+        Student student = new Student();
+        student.setName("Grif");
+        student.setFaculty(fac1);
+
+        //ожидаемый результат
+        List<Student> students = List.of(student);
+        fac1.setStudents(students);
+
+        //начало теста
+        List<Student> actualStudents = facultyService.getStudents(fac1);
+        assertEquals(students, actualStudents);
     }
 }

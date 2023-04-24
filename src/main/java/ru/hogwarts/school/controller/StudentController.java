@@ -11,6 +11,7 @@ import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -52,4 +53,15 @@ public class StudentController {
         }
         return ResponseEntity.ok(foundStudent);
     }
+
+    @GetMapping("/getAll/between")
+    public List<Student> getAll(@RequestParam int min, @RequestParam int max){
+        return studentService.getAll(min, max);
+    }
+
+    @GetMapping("/getFaculty")
+    public Faculty getFaculty(@RequestBody Student request){
+        return studentService.getFaculty(request);
+    }
+
 }

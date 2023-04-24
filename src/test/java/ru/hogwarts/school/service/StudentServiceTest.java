@@ -141,4 +141,58 @@ class StudentServiceTest {
         assertEquals(stud1, studentActual);
         assertTrue(ageLast == studentActual.getAge());
     }
+
+    @Test
+    void getAllAges_success() {
+        //входные данные
+        int ageFisrt = 18;
+        int ageSecond = 20;
+        Student stud1 = new Student();
+        stud1.setAge(ageFisrt);
+
+        Student stud2 = new Student();
+        stud2.setAge(ageSecond + ageSecond);
+
+        Student stud3 = new Student();
+        stud3.setAge(ageSecond);
+
+        List<Student> students = List.of(stud1, stud3);
+
+        //ожидаемый результат
+        when(studentRepository.findAllByAgeBetween(ageFisrt, ageSecond)).thenReturn(students);
+
+
+        //начало теста
+        studentService.add(stud1);
+        studentService.add(stud2);
+        studentService.add(stud3);
+        Collection<Student> actualStudents = studentService.getAll(ageFisrt, ageSecond);
+        assertEquals(students, actualStudents);
+
+    }
+
+    @Test
+    void getFaculty_success() {
+
+        //входные данные
+        int ageFisrt = 18;
+        int ageSecond = 20;
+        Student stud1 = new Student();
+        stud1.setAge(ageFisrt);
+
+        Faculty faculty = new Faculty();
+        faculty.setName("Grif");
+        stud1.setFaculty(faculty);
+
+        //ожидаемый результат
+        stud1.setFaculty(faculty);
+
+        //начало теста
+        studentService.add(stud1);
+        Faculty actualFaculty = studentService.getFaculty(stud1);
+        assertEquals(faculty, actualFaculty);
+
+
+    }
+
 }

@@ -53,4 +53,15 @@ public class FacultyController {
 
         return ResponseEntity.ok(foundFaculty);
     }
+
+    @GetMapping("/getAll/faculty")
+    public List<Faculty> getAll(@RequestParam String name, @RequestParam String color){
+
+        return facultyService.getAll(name, color);
+    }
+
+    @GetMapping("/getStudents")
+    public List<Student> getStudents(@RequestBody Faculty request){
+        return facultyService.getStudents(request);
+    }
 }
