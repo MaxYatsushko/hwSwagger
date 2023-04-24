@@ -28,15 +28,10 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
-    public Set<Faculty> getAll(String color){
+    public List<Faculty> getAll(String color){
 
-        Set<Faculty> facultiesColor = new HashSet<>();
-        Collection<Faculty> faculties = facultyRepository.findAll();
-        for (Faculty faculty: faculties)
-            if (faculty.getColor().equals(color))
-                facultiesColor.add(faculty);
+        return facultyRepository.getFacultiesByColor(color);
 
-        return facultiesColor;
     }
 
     public Faculty update(Faculty faculty){

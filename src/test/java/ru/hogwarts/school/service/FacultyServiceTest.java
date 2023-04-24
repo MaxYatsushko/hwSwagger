@@ -104,15 +104,14 @@ class FacultyServiceTest {
         List<Faculty> faculties = List.of(fac1, fac3);
 
         //ожидаемый результат
-        when(facultyRepository.findAll()).thenReturn(faculties);
+        when(facultyRepository.getFacultiesByColor(colorFind)).thenReturn(faculties);
 
         //начало теста
         facultyService.add(fac1);
         facultyService.add(fac2);
         facultyService.add(fac3);
-        List<Faculty> actualFaculties = new ArrayList<>(facultyService.getAll(colorFind));
+        List<Faculty> actualFaculties = facultyService.getAll(colorFind);
         assertEquals(faculties, actualFaculties);
-        verify(facultyRepository).findAll();
     }
 
     @Test

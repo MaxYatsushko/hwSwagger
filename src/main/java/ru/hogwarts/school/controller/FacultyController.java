@@ -10,6 +10,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -38,7 +39,7 @@ public class FacultyController {
         return facultyService.getAll();
     }
     @GetMapping("/getAll/{color}")
-    public Set<Faculty> getAll(@PathVariable String color){
+    public List<Faculty> getAll(@PathVariable String color){
         return facultyService.getAll(color);
     }
 
