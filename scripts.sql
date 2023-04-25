@@ -4,6 +4,8 @@
 4. Получить всех студентов, у которых возраст меньше идентификатора.
 5. Получить всех студентов упорядоченных по возрасту.*/
 
+SELECT * from Student;
+
 
 SELECT * from Student as stud where stud.age between 10 and 20;
 
