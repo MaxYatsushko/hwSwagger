@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.*;
@@ -28,17 +29,17 @@ public class FacultyService {
         return facultyRepository.findAll();
     }
 
-    public Set<Faculty> getAll(String color){
-
-        Set<Faculty> facultiesColor = new HashSet<>();
-        Collection<Faculty> faculties = facultyRepository.findAll();
-        for (Faculty faculty: faculties)
-            if (faculty.getColor().equals(color))
-                facultiesColor.add(faculty);
-
-        return facultiesColor;
+    public List<Faculty> getAll(String color){
+        return facultyRepository.getFacultiesByColor(color);
     }
 
+    public List<Faculty> getAll(String name, String color){
+        return facultyRepository.findAllByNameIgnoreCaseOrColorIgnoreCase(name, color);
+    }
+
+    public List<Student> getStudents(Faculty faculty){
+        return faculty.getStudents();
+    }
     public Faculty update(Faculty faculty){
         return facultyRepository.save(faculty);
     }
