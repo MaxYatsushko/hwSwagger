@@ -11,6 +11,7 @@ SELECT * from Student as stud where stud.age between 10 and 20;
 
 SELECT stud.name from Student as stud;
 
+
 SELECT * from Student as stud where stud.name like '%o%';
 
 SELECT * from Student as stud where stud.age < stud.id;
