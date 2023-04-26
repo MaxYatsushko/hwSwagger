@@ -16,6 +16,9 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+    public Student getStudentById(Long id) {
+        return studentRepository.findById(id).get();
+    }
     public Student add(Student student){
         return studentRepository.save(student);
     }

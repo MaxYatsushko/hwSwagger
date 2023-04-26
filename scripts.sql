@@ -16,3 +16,5 @@ SELECT * from Student as stud where stud.name like '%o%';
 SELECT * from Student as stud where stud.age < stud.id;
 
 SELECT * from Student as stud order by stud.age asc;
+
+select * from Avatar
