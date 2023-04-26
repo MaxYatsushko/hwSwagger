@@ -26,38 +26,25 @@ public class AvatarController {
     }
 
 
-    @PostMapping(value = "/{studentId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/{studentId}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> uploadAvatar(@PathVariable Long studentId, @RequestParam MultipartFile avatar) throws IOException {
         avatarService.uploadAvatar(studentId, avatar);
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/{id}/avatar-from-db")
+    @GetMapping(value = "/{id}/avatar/preview")
     public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
-        Avatar avatar = null;
-        try {
-            avatar = avatarService.findByStudentId(id);
-        }
-        catch (RuntimeException e){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        Avatar avatar = avatarService.findAvatar(id);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType(avatar.getMediaType()));
         headers.setContentLength(avatar.getData().length);
         return ResponseEntity.status(HttpStatus.OK).headers(headers).body(avatar.getData());
     }
-    @GetMapping(value = "/{id}/avatar-from-file")
+    @GetMapping(value = "/{id}/avatar")
     public void downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException{
 
-        Avatar avatar = null;
-        try {
-            avatar = avatarService.findByStudentId(id);
-        }
-        catch (RuntimeException e){
-            response.sendError(404);
-            return;
-        }
+        Avatar avatar = avatarService.findAvatar(id);
 
         Path path = Path.of(avatar.getFilePath());
         try(InputStream is = Files.newInputStream(path);

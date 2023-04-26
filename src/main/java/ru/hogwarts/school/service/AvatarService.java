@@ -9,6 +9,9 @@ import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,32 +46,39 @@ public class AvatarService {
         ) {
             bis.transferTo(bos);
         }
-        Avatar avatar = findByStudentIdOrCreate(studentId);
-        if(avatar == null)
-            avatar = new Avatar();
+        Avatar avatar = findAvatar(studentId);
+
         avatar.setStudent(student);
         avatar.setFilePath(filePath.toString());
         avatar.setFileSize(avatarFile.getSize());
         avatar.setMediaType(avatarFile.getContentType());
-        avatar.setData(avatarFile.getBytes());
+        //avatar.setData(avatarFile.getBytes());
+        avatar.setData(generateDataForDB(filePath));
         avatarRepository.save(avatar);
+    }
+    private byte[] generateDataForDB(Path filePath) throws IOException{
+        try (
+                InputStream is = Files.newInputStream(filePath);
+                BufferedInputStream bis = new BufferedInputStream(is, 3092);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            BufferedImage image = ImageIO.read(bis);
+
+            int height = image.getHeight() / (image.getWidth() / 100);
+            BufferedImage preview = new BufferedImage(100, height, image.getType());
+            Graphics2D graphics2D = preview.createGraphics();
+            graphics2D.drawImage(image, 0, 0, 100, height, null);
+            graphics2D.dispose();
+
+            ImageIO.write(preview, getExtensions(filePath.getFileName().toString()), baos);
+            return baos.toByteArray();
+        }
     }
     private String getExtensions(String fileName) {
         return fileName.substring(fileName.lastIndexOf(".") + 1);
     }
-    public Avatar findByStudentId(Long id){
 
-        Avatar avatar = avatarRepository.findByStudentId(id);
-        if(avatar == null)
-            throw new RuntimeException("Аватар не найден");
-        return avatar;
-    }
+    public Avatar findAvatar(Long id){
+        return avatarRepository.findByStudentId(id).orElse(new Avatar());
 
-    public Avatar findByStudentIdOrCreate(Long id){
-
-        Avatar avatar = avatarRepository.findByStudentId(id);
-        if(avatar == null)
-            return new Avatar();
-        return avatar;
     }
 }

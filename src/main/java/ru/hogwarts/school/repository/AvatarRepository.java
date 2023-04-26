@@ -8,6 +8,6 @@ import ru.hogwarts.school.model.Student;
 import java.util.Optional;
 
 public interface AvatarRepository extends JpaRepository<Avatar, Long>  {
-    @Query("select av from Avatar av where av.student.id = :id")
-    Avatar findByStudentId(Long id);
+    //@Query("select av from Avatar av where av.student.id = :id")
+    Optional<Avatar> findByStudentId(Long id);
 }
