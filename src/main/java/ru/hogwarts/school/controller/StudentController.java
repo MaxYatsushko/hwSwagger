@@ -39,8 +39,9 @@ public class StudentController {
     public Collection<Student> getAll(){
         return studentService.getAll();
     }
+
     @GetMapping("/getAll/{age}")
-    public Set<Student> getAll(@PathVariable int age){
+    public List<Student> getAll(@PathVariable int age){
         return studentService.getAll(age);
     }
 
