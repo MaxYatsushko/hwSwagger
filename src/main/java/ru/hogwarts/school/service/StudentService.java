@@ -16,6 +16,9 @@ public class StudentService {
         this.studentRepository = studentRepository;
     }
 
+    public Student getStudentById(Long id) {
+        return studentRepository.findById(id).get();
+    }
     public Student add(Student student){
         return studentRepository.save(student);
     }
@@ -28,15 +31,9 @@ public class StudentService {
         return studentRepository.findAll();
     }
 
-    public Set<Student> getAll(int age){
+    public List<Student> getAll(int age){
 
-        Set<Student> studentAge = new HashSet<>();
-        Collection<Student> students = studentRepository.findAll();
-        for (Student student: students)
-            if (student.getAge() == age)
-                studentAge.add(student);
-
-        return studentAge;
+        return studentRepository.findAllByAge(age);
     }
 
     public List<Student> getAll(int minAge, int maxAge){

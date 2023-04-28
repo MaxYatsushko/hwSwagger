@@ -136,13 +136,7 @@ class FacultyServiceTest {
         assertEquals(fac1, facultyActual);
         assertTrue(colorLast == facultyActual.getColor());
     }
-    public List<Faculty> getAll(String name, String color){
-        return facultyRepository.findAllByNameIgnoreCaseOrColorIgnoreCase(name, color);
-    }
 
-    public List<Student> getStudents(Faculty faculty){
-        return faculty.getStudents();
-    }
     @Test
     void getAllNameOrColor_success() {
         //входные данные

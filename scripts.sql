@@ -4,13 +4,18 @@
 4. Получить всех студентов, у которых возраст меньше идентификатора.
 5. Получить всех студентов упорядоченных по возрасту.*/
 
+SELECT * from Student;
+
 
 SELECT * from Student as stud where stud.age between 10 and 20;
 
 SELECT stud.name from Student as stud;
+
 
 SELECT * from Student as stud where stud.name like '%o%';
 
 SELECT * from Student as stud where stud.age < stud.id;
 
 SELECT * from Student as stud order by stud.age asc;
+
+select * from Avatar

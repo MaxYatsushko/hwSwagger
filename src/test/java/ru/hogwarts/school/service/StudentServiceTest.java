@@ -103,16 +103,16 @@ class StudentServiceTest {
         List<Student> students = List.of(stud1, stud3);
 
         //ожидаемый результат
-        when(studentRepository.findAll()).thenReturn(students);
+        when(studentRepository.findAllByAge(ageFind)).thenReturn(students);
 
         //начало теста
-        studentService.add(stud1);
-        studentService.add(stud2);
-        studentService.add(stud3);
-        List<Student> actualStudents = new ArrayList<>(studentService.getAll(ageFind));
+        //studentService.add(stud1);
+        //studentService.add(stud2);
+        //studentService.add(stud3);
+        List<Student> actualStudents = studentService.getAll(ageFind);
         assertTrue(students.contains(actualStudents.get(size - 2)) && students.contains(actualStudents.get(size - 1)));
         //assertEquals(students, actualStudents); - порядок элементов разный при выполнении всех тестов. Локально работает на True, также в дебаге
-        verify(studentRepository).findAll();
+        verify(studentRepository).findAllByAge(ageFind);
     }
 
     @Test
