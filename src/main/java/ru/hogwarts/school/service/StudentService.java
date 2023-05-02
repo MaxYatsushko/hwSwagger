@@ -32,7 +32,6 @@ public class StudentService {
     }
 
     public List<Student> getAll(int age){
-
         return studentRepository.findAllByAge(age);
     }
 
@@ -46,5 +45,17 @@ public class StudentService {
 
     public Student update(Student student){
         return studentRepository.save(student);
+    }
+
+    public int getNumberStudents(){
+        return studentRepository.getNumberStudents();
+    }
+
+    public int getAvgAge(){
+        return studentRepository.getAvgAge();
+    }
+
+    public List<Student> getLastFiveStudent(){
+        return studentRepository.getLastFiveStudent();
     }
 }

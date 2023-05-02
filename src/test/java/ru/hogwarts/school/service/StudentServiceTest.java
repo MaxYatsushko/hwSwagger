@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.web.bind.annotation.GetMapping;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
@@ -169,6 +170,100 @@ class StudentServiceTest {
         Collection<Student> actualStudents = studentService.getAll(ageFisrt, ageSecond);
         assertEquals(students, actualStudents);
 
+    }
+
+    @Test
+    void getNumberStudents_success() {
+        //входные данные
+        int ageFisrt = 18;
+        int ageSecond = 20;
+        Student stud1 = new Student();
+        stud1.setAge(ageFisrt);
+
+        Student stud2 = new Student();
+        stud2.setAge(ageSecond + ageSecond);
+
+        Student stud3 = new Student();
+        stud3.setAge(ageSecond);
+
+        List<Student> students = List.of(stud1, stud3);
+
+        //ожидаемый результат
+        when(studentRepository.getNumberStudents()).thenReturn(students.size());
+
+        //начало теста
+        int actualNumberStudents = studentService.getNumberStudents();
+        assertTrue(students.size() == actualNumberStudents);
+    }
+
+    @Test
+    void getAvgAge_success() {
+        //входные данные
+        int ageFisrt = 18;
+        int ageSecond = 20;
+        Student stud1 = new Student();
+        stud1.setAge(ageFisrt);
+
+        Student stud2 = new Student();
+        stud2.setAge(ageSecond + ageSecond);
+
+        Student stud3 = new Student();
+        stud3.setAge(ageSecond);
+
+        List<Student> students = List.of(stud1, stud2, stud3);
+
+        //ожидаемый результат
+        int sumAge = 0;
+        for (Student student: students){
+            sumAge += student.getAge();
+        }
+        int avgAge = sumAge / students.size();
+        when(studentRepository.getAvgAge()).thenReturn(avgAge);
+
+        //начало теста
+        int actualAvgAgeStudents = studentService.getAvgAge();
+        assertTrue(avgAge == actualAvgAgeStudents);
+    }
+
+    @Test
+    void getLastFiveStudent_success() {
+        //входные данные
+        int ageFisrt = 18;
+        int ageSecond = 20;
+        Student stud1 = new Student();
+        stud1.setAge(ageFisrt);
+
+        Student stud2 = new Student();
+        stud2.setAge(ageSecond + ageSecond);
+
+        Student stud3 = new Student();
+        stud3.setAge(ageSecond);
+
+        Student stud4 = new Student();
+        stud4.setAge(ageSecond);
+
+        Student stud5 = new Student();
+        stud5.setAge(ageSecond);
+
+        Student stud6 = new Student();
+        stud6.setAge(ageSecond);
+
+        Student stud7 = new Student();
+        stud7.setAge(ageSecond);
+
+        List<Student> students = List.of(stud3, stud4, stud5, stud6, stud7);
+
+        //ожидаемый результат
+        int sumAge = 0;
+        for (Student student: students){
+            sumAge += student.getAge();
+        }
+        int avgAge = sumAge / students.size();
+        when(studentRepository.getLastFiveStudent()).thenReturn(students);
+
+        //начало теста
+        List<Student> actualLastFiveStudents = studentService.getLastFiveStudent();
+        assertEquals(students, actualLastFiveStudents);
     }
 
     @Test

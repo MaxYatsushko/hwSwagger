@@ -18,4 +18,7 @@ SELECT * from Student as stud where stud.age < stud.id;
 
 SELECT * from Student as stud order by stud.age asc;
 
-select * from Avatar
+select * from Avatar;
+
+
+/*select top 5 * from Student order by id desc; не поддерживает метод top*/
