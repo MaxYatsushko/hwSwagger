@@ -1,2 +1,6 @@
 C:\Users\Maks\.jdks\corretto-11.0.17\bin\java.exe -jar C:\Users\Maks\IdeaProjects\HomeWorkSwaggerUI\target\school-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
  mvn clean install
+
+
+ C:\Users\Maks\.jdks\corretto-11.0.17\bin\java.exe -jar C:\Users\Maks\IdeaProjects\HomeWorkSwaggerUI\target\school-0.0.1-SNAPSHOT.jar --spring.profiles.active=test
+

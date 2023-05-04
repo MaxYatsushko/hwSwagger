@@ -187,6 +187,4 @@ class FacultyServiceTest {
         List<Student> actualStudents = facultyService.getStudents(fac1);
         assertEquals(students, actualStudents);
     }
-
-
 }

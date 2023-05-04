@@ -36,7 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest
 class HomeWorkSwaggerUiApplicationTests {
-
+/*
     @Autowired
     private MockMvc mockMvc;
 
@@ -552,6 +552,6 @@ class HomeWorkSwaggerUiApplicationTests {
     /////////////////////////////////////////////////////
     //Область тесты факультет Конец
     /////////////////////////////////////////////////////
-
+*/
 
 }

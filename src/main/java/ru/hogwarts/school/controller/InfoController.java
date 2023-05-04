@@ -11,12 +11,12 @@ import ru.hogwarts.school.service.InfoServiceProd;
 public class InfoController {
 
     @Autowired
-    private InfoService infoService;
+    private InfoServiceProd infoServiceProd;
 
 
     @GetMapping("/getPort")
     public int getPort(){
-        return infoService.getPort();
+        return infoServiceProd.getPort();
     }
 
 }

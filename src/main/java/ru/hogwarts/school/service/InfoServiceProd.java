@@ -1,12 +1,16 @@
 package ru.hogwarts.school.service;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 @Service
-@Profile("prod")
+//@Profile("prod")
 public class InfoServiceProd implements InfoService{
+
+    @Value("${server.port.for.user}")
+    private int port;
     public int getPort(){
-        return 8080;
+        return port;
     }
 }

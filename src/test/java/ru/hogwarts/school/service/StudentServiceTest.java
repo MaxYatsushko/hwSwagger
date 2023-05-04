@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
 @ContextConfiguration(classes = {StudentService.class})
 @ExtendWith(SpringExtension.class)
 class StudentServiceTest {
-
     @Autowired
     private StudentService studentService;
 
@@ -289,4 +288,5 @@ class StudentServiceTest {
 
 
     }
+
 }
