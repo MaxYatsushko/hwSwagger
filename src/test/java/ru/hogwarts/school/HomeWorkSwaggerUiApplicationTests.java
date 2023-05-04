@@ -15,15 +15,14 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.controller.FacultyController;
+import ru.hogwarts.school.controller.InfoController;
 import ru.hogwarts.school.controller.StudentController;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.AvatarRepository;
 import ru.hogwarts.school.repository.FacultyRepository;
 import ru.hogwarts.school.repository.StudentRepository;
-import ru.hogwarts.school.service.AvatarService;
-import ru.hogwarts.school.service.FacultyService;
-import ru.hogwarts.school.service.StudentService;
+import ru.hogwarts.school.service.*;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -59,11 +58,17 @@ class HomeWorkSwaggerUiApplicationTests {
     @SpyBean
     private AvatarService avatarService;
 
+    @SpyBean
+    private InfoServiceProd infoServiceProd;
+
     @InjectMocks
     private StudentController studentController;
 
     @InjectMocks
     private FacultyController facultyController;
+
+    @InjectMocks
+    private InfoController infoController;
 
 
     /////////////////////////////////////////////////////
@@ -547,4 +552,6 @@ class HomeWorkSwaggerUiApplicationTests {
     /////////////////////////////////////////////////////
     //Область тесты факультет Конец
     /////////////////////////////////////////////////////
+
+
 }
