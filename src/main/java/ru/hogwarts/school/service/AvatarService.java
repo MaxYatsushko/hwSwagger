@@ -1,5 +1,7 @@
 package ru.hogwarts.school.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -25,6 +27,8 @@ import static java.nio.file.StandardOpenOption.CREATE_NEW;
 @Service
 @Transactional
 public class AvatarService {
+
+    private Logger logger = LoggerFactory.getLogger(AvatarService.class);
     @Value("${path.to.avatars.folder}")
     private String avatarsDir;
     private final StudentService studentService;
@@ -35,6 +39,7 @@ public class AvatarService {
     }
 
     public void uploadAvatar(Long studentId, MultipartFile avatarFile) throws IOException {
+        logger.debug("Requesting uploadAvatar studentId id={} avatarFile name={}", studentId, avatarFile.getName());
         Student student = studentService.getStudentById(studentId);
 
         Path filePath = Path.of(avatarsDir, student + "." + getExtensions(avatarFile.getOriginalFilename()));
@@ -57,8 +62,11 @@ public class AvatarService {
         //avatar.setData(avatarFile.getBytes());
         avatar.setData(generateDataForDB(filePath));
         avatarRepository.save(avatar);
+
+        logger.debug("The request of uploadAvatar is successful for studentId={} and filepath={}", studentId, filePath.toString());
     }
     private byte[] generateDataForDB(Path filePath) throws IOException{
+        logger.debug("Requesting generateDataForDB filePath={}", filePath.toString());
         try (
                 InputStream is = Files.newInputStream(filePath);
                 BufferedInputStream bis = new BufferedInputStream(is, 3092);
@@ -72,6 +80,8 @@ public class AvatarService {
             graphics2D.dispose();
 
             ImageIO.write(preview, getExtensions(filePath.getFileName().toString()), baos);
+            logger.debug("The request of generateDataForDB is successful for filepath={}", filePath.toString());
+
             return baos.toByteArray();
         }
     }
@@ -80,12 +90,20 @@ public class AvatarService {
     }
 
     public Avatar findAvatar(Long id){
-        return avatarRepository.findByStudentId(id).orElse(new Avatar());
+        logger.debug("Requesting findAvatar id={}", id);
+        Avatar findAvatar = avatarRepository.findByStudentId(id).orElse(new Avatar());
+        logger.debug("The request of findAvatar is successful and avatar id={}", findAvatar.getId());
+
+        return findAvatar;
     }
 
     public List<Avatar> getAllAvatars(Integer pageNumber, Integer pageSize){
+        logger.debug("Requesting getAllAvatars pageNumber={} and pageSize={}", pageNumber, pageSize);
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize);
-        return avatarRepository.findAll(pageRequest).getContent();
+        List<Avatar> avatars = avatarRepository.findAll(pageRequest).getContent();
+        logger.debug("The request of getAllAvatars is successful and numbers={}", avatars.size());
+
+        return avatars;
     }
 
 
