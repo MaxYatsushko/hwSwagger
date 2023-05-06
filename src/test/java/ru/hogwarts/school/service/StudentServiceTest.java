@@ -16,6 +16,7 @@ import ru.hogwarts.school.repository.StudentRepository;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
@@ -62,7 +63,6 @@ class StudentServiceTest {
         when(studentRepository.findAll()).thenReturn((List<Student>) students);
 
         //начало теста
-        studentService.add(stud1);
         Collection<Student> actualStudents1 = studentService.getAll();
         assertEquals(students, actualStudents1);
 
@@ -83,7 +83,6 @@ class StudentServiceTest {
         when(studentRepository.findAll()).thenReturn((List<Student>) students);
 
         //начало теста
-        studentService.add(stud1);
         Collection<Student> actualStudents = studentService.getAll();
         assertEquals(students, actualStudents);
         verify(studentRepository).findAll();
@@ -161,11 +160,7 @@ class StudentServiceTest {
         //ожидаемый результат
         when(studentRepository.findAllByAgeBetween(ageFisrt, ageSecond)).thenReturn(students);
 
-
         //начало теста
-        studentService.add(stud1);
-        studentService.add(stud2);
-        studentService.add(stud3);
         Collection<Student> actualStudents = studentService.getAll(ageFisrt, ageSecond);
         assertEquals(students, actualStudents);
 
@@ -280,6 +275,7 @@ class StudentServiceTest {
 
         //ожидаемый результат
         stud1.setFaculty(faculty);
+        when(studentRepository.save(stud1)).thenReturn(stud1);
 
         //начало теста
         studentService.add(stud1);
@@ -289,4 +285,53 @@ class StudentServiceTest {
 
     }
 
+    @Test
+    void getStudentsNameBeginA_success() {
+
+        //входные данные
+        String name = "Adfdsfds", name2 = "Absd", name3 = "fdfsd";
+        Student stud1 = new Student();
+        stud1.setName(name);
+
+        Student stud2 = new Student();
+        stud2.setName(name2);
+
+        Student stud3 = new Student();
+        stud3.setName(name3);
+
+        List<Student> students = List.of(stud1, stud2, stud3);
+
+        //ожидаемый результат
+        when(studentRepository.findAll()).thenReturn(students);
+        List<String> expectedNames = List.of(name2.toUpperCase(), name.toUpperCase());
+
+        //начало теста
+        List<String> actualNames = studentService.getStudentsNameBeginA();
+        assertEquals(expectedNames, actualNames);
+    }
+
+    @Test
+    void getAvgAgeStream_success() {
+
+        //входные данные
+        int age = 17, age2 = 18, age3 = 18;
+        Student stud1 = new Student();
+        stud1.setAge(age);
+
+        Student stud2 = new Student();
+        stud2.setAge(age2);
+
+        Student stud3 = new Student();
+        stud3.setAge(age3);
+
+        List<Student> students = List.of(stud1, stud2, stud3);
+
+        //ожидаемый результат
+        when(studentRepository.findAll()).thenReturn(students);
+        Double expectedAvgAge = (double) (age + age2 + age3) / 3;
+
+        //начало теста
+        Double actualAvgAge = studentService.getAvgAgeStream();
+        assertEquals(expectedAvgAge, actualAvgAge);
+    }
 }

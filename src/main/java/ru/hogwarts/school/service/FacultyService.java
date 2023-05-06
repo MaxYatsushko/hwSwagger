@@ -10,6 +10,8 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.*;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class FacultyService {
@@ -73,5 +75,68 @@ public class FacultyService {
         logger.debug("The request of update is successful and faculty id={} name={}", updateFaculty.getId(), updateFaculty.getName());
 
         return updateFaculty;
+    }
+
+    public String getLongestName(){
+        logger.debug("Requesting getLongestName");
+        String nameLongest = facultyRepository.findAll().stream()
+                .map(faculty -> faculty.getName())
+                .max(Comparator.comparingInt(String::length))
+                .orElse("Не найден");
+        logger.debug("The request of getLongestName is successful and longest name={}", nameLongest);
+
+        return nameLongest;
+    }
+
+    public int getIntExecSomeFunctionTest1() {
+        long start = System.currentTimeMillis();
+        int someInt = Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b);
+        long finish = System.currentTimeMillis();
+        logger.info("getIntExecSomeFunctionTest1 result: {}, time: {}", someInt, finish - start);
+        return someInt;
+    }
+     public int getIntExecSomeFunctionTest2() {
+        long start = System.currentTimeMillis();
+        int someInt = IntStream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .parallel()
+                .reduce(0, (a, b) -> a + b);
+        long finish = System.currentTimeMillis();
+        logger.info("getIntExecSomeFunctionTest2 result: {}, time: {}", someInt, finish - start);
+        return someInt;
+    }
+
+    public int getIntExecSomeFunctionTest3() {
+        long start = System.currentTimeMillis();
+        int someInt = Stream.iterate(1, a -> a + 1)
+                .limit(1_000_000)
+                .parallel()
+                .reduce(0, (a, b) -> a + b);
+        long finish = System.currentTimeMillis();
+        logger.info("getIntExecSomeFunctionTest3 result: {}, time: {}", someInt, finish - start);
+        return someInt;
+    }
+
+    public int getIntExecSomeFunctionTest4() {
+        long start = System.currentTimeMillis();
+        int someInt = Stream.iterate(1, a -> a + 1)
+                .parallel()
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b);
+        long finish = System.currentTimeMillis();
+        logger.info("getIntExecSomeFunctionTest4 result: {}, time: {}", someInt, finish - start);
+        return someInt;
+    }
+    public int getIntExecSomeFunctionTest5() {
+        long start = System.currentTimeMillis();
+        int someInt = IntStream.iterate(1, a -> a + 1)
+                .parallel()
+                .limit(1_000_000)
+                .reduce(0, (a, b) -> a + b);
+        long finish = System.currentTimeMillis();
+        logger.info("getIntExecSomeFunctionTest5 result: {}, time: {}", someInt, finish - start);
+        return someInt;
     }
 }

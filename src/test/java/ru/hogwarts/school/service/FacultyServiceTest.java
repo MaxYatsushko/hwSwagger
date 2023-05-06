@@ -59,7 +59,6 @@ class FacultyServiceTest {
         when(facultyRepository.findAll()).thenReturn((List<Faculty>) faculties);
 
         //начало теста
-        facultyService.add(fac1);
         Collection<Faculty> actualFaculties1 = facultyService.getAll();
         assertEquals(faculties, actualFaculties1);
 
@@ -80,7 +79,6 @@ class FacultyServiceTest {
         when(facultyRepository.findAll()).thenReturn((List<Faculty>) faculties);
 
         //начало теста
-        facultyService.add(fac1);
         Collection<Faculty> actualFaculties = facultyService.getAll();
         assertEquals(faculties, actualFaculties);
         verify(facultyRepository).findAll();
@@ -103,9 +101,6 @@ class FacultyServiceTest {
         when(facultyRepository.getFacultiesByColor(colorFind)).thenReturn(faculties);
 
         //начало теста
-        facultyService.add(fac1);
-        facultyService.add(fac2);
-        facultyService.add(fac3);
         List<Faculty> actualFaculties = facultyService.getAll(colorFind);
         assertEquals(faculties, actualFaculties);
     }
@@ -157,11 +152,7 @@ class FacultyServiceTest {
         //ожидаемый результат
         when(facultyRepository.findAllByNameIgnoreCaseOrColorIgnoreCase(name, color)).thenReturn(faculties);
 
-
         //начало теста
-        facultyService.add(fac1);
-        facultyService.add(fac2);
-        facultyService.add(fac3);
         List<Faculty> actualStudents = facultyService.getAll(name, color);
         assertEquals(faculties, actualStudents);
 
@@ -186,5 +177,29 @@ class FacultyServiceTest {
         //начало теста
         List<Student> actualStudents = facultyService.getStudents(fac1);
         assertEquals(students, actualStudents);
+    }
+
+    @Test
+    void getLongestName_success() {
+
+        //входные данные
+        String name = "test", name2 = "testt", name3 = "testovii";
+        Faculty fac1 = new Faculty();
+        fac1.setName(name);
+
+        Faculty fac2 = new Faculty();
+        fac2.setName(name2);
+
+        Faculty fac3 = new Faculty();
+        fac3.setName(name3);
+        List<Faculty> faculties = List.of(fac1, fac2, fac3);
+
+        //ожидаемый результат
+        when(facultyRepository.findAll()).thenReturn(faculties);
+        String expectedLongestName = name3;
+
+        //начало теста
+        String actualLongestName = facultyService.getLongestName();
+        assertEquals(expectedLongestName, actualLongestName);
     }
 }

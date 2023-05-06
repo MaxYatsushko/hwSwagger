@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
@@ -101,5 +102,28 @@ public class StudentService {
         logger.debug("The request of getLastFiveStudent is successful and numbers={}", students.size());
 
         return students;
+    }
+
+    public List<String> getStudentsNameBeginA(){
+        logger.debug("Requesting getStudentsNameBeginA");
+        List<String> nameStudents = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .map(String::toUpperCase)
+                .filter(name -> name.startsWith("A"))
+                .sorted()
+                .collect(Collectors.toList());
+        logger.debug("The request of getStudentsNameBeginA is successful and numbers={}", nameStudents.size());
+
+        return nameStudents;
+    }
+
+    public Double getAvgAgeStream(){
+        logger.debug("Requesting getAvgAgeStream");
+        Double avgAge = studentRepository.findAll().stream()
+                .mapToInt(student -> student.getAge()).average()
+                .orElse(0.0);
+        logger.debug("The request of getAvgAgeStream is successful and average age={}", avgAge);
+
+        return avgAge;
     }
 }
