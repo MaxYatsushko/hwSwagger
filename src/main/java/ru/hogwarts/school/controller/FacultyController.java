@@ -64,4 +64,19 @@ public class FacultyController {
     public List<Student> getStudents(@RequestBody Faculty request){
         return facultyService.getStudents(request);
     }
+    @GetMapping("/get-longest-name")
+    public String getLongestName(){
+        return facultyService.getLongestName();
+    }
+
+    @GetMapping("/get-int-exec-some-functions")
+    public int getIntExecSomeFunction(){
+        facultyService.getIntExecSomeFunctionTest1();
+        facultyService.getIntExecSomeFunctionTest2();
+        facultyService.getIntExecSomeFunctionTest3();
+        facultyService.getIntExecSomeFunctionTest4();
+        facultyService.getIntExecSomeFunctionTest5();
+
+        return 0;
+    }
 }
