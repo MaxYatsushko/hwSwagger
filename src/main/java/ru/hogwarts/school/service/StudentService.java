@@ -15,6 +15,7 @@ public class StudentService {
 
     Logger logger = LoggerFactory.getLogger(StudentService.class);
     private final StudentRepository studentRepository;
+    private final Object flag = new Object();
 
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
@@ -125,5 +126,57 @@ public class StudentService {
         logger.debug("The request of getAvgAgeStream is successful and average age={}", avgAge);
 
         return avgAge;
+    }
+
+    public void printAll(){
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println(students);
+
+        printStudent(students.get(0));
+        printStudent(students.get(1));
+
+        new Thread(()-> {
+                printStudent(students.get(2));
+                printStudent(students.get(3));
+        }
+        ).start();
+
+        new Thread(()-> {
+            printStudent(students.get(4));
+            printStudent(students.get(5));
+        }
+        ) .start();
+    }
+
+    private void printStudent(Student student){
+        System.out.println(Thread.currentThread().getName() + " " + student);
+    }
+
+    public void printAllSync(){
+        List<Student> students = studentRepository.findAll();
+
+        System.out.println(students);
+
+        printStudentSync(students.get(0));
+        printStudentSync(students.get(1));
+
+        new Thread(()-> {
+            printStudentSync(students.get(2));
+            printStudentSync(students.get(3));
+        }
+        ).start();
+
+        new Thread(()-> {
+            printStudentSync(students.get(4));
+            printStudentSync(students.get(5));
+        }
+        ) .start();
+    }
+
+    private void printStudentSync(Student student){
+        synchronized (flag) {
+            System.out.println(Thread.currentThread().getName() + " " + student);
+        }
     }
 }
